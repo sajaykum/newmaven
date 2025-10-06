@@ -1,43 +1,51 @@
+@Library('mylibrary')_
+
 pipeline
 {
     agent any
     stages
     {
-        stage('Download')
+        stage('Download_Master')
         {
             steps
             {
-                git 'https://github.com/IntelliqDevops/maven.git'
+                script
+                {
+                    cicd.gitDownload("maven")
+                }
             }
         }
-        stage('Build')
+        stage('Build_Master')
         {
             steps
             {
-                sh 'mvn package'
+                script
+                {
+                    cicd.buildArtifacts()
+                }
             }
         }
-        stage('Deployment')
+        stage('Deploy_Master')
         {
             steps
             {
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: '8c4a8c6e-136e-430f-b8dd-3365d294c75e', path: '', url: 'http://172.31.31.19:8080')], contextPath: 'testapp', war: '**/*.war'
+                script
+                {
+                    cicd.deployTomcat("DeclarativePipelIneWithSharedLibrary","52.90.219.113","testapp")
+                }
             }
         }
-         stage('Testing')
+         stage('Testing_Master')
         {
             steps
             {
-                git 'https://github.com/IntelliqDevops/FunctionalTesting.git'
-                sh 'java -jar /var/lib/jenkins/workspace/DeclarativePipeline1/testing.jar'
+                script
+                {
+                      cicd.gitDownload("FunctionalTesting")
+                      cicd.executeSelenium("DeclarativePipelIneWithSharedLibrary")
+                }
             }
         }
-        stage('Delivery')
-        {
-            steps
-            {
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: '8c4a8c6e-136e-430f-b8dd-3365d294c75e', path: '', url: 'http://172.31.25.180:8080')], contextPath: 'prodapp', war: '**/*.war'
-            }
-        }
+        
     }
-}
+}  
