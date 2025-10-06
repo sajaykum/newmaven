@@ -1,11 +1,9 @@
-@Library('mylibrary')_
-
 pipeline
 {
     agent any
     stages
     {
-        stage('Download_Master')
+        stage('Download_Loans')
         {
             steps
             {
@@ -15,7 +13,7 @@ pipeline
                 }
             }
         }
-        stage('Build_Master')
+        stage('Build_Loans')
         {
             steps
             {
@@ -25,27 +23,5 @@ pipeline
                 }
             }
         }
-        stage('Deploy_Master')
-        {
-            steps
-            {
-                script
-                {
-                    cicd.deployTomcat("DeclarativePipelIneWithSharedLibrary","52.90.219.113","testapp")
-                }
-            }
-        }
-         stage('Testing_Master')
-        {
-            steps
-            {
-                script
-                {
-                      cicd.gitDownload("FunctionalTesting")
-                      cicd.executeSelenium("DeclarativePipelIneWithSharedLibrary")
-                }
-            }
-        }
-        
-    }
-}  
+   }
+}
