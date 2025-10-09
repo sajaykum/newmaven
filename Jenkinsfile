@@ -31,7 +31,7 @@ pipeline
             {
                 script
                 {
-                    cicd.deployTomcat("DeclarativePipelIneWithSharedLibrary","52.90.219.113","testapp")
+                    cicd.deployTomcat("DeclarativePipelIneWithSharedLibrary","54.226.208.26","testapp")
                 }
             }
         }
